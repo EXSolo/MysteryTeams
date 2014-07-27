@@ -1,11 +1,11 @@
 package com.exsoloscript.mysteryteams.event;
 
 import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerShearEntityEvent;
 
 public class WoolListener implements Listener {
 
@@ -16,14 +16,8 @@ public class WoolListener implements Listener {
 	}
 	
 	@EventHandler
-	public void onItemDrop(PlayerDropItemEvent event) {
-		if (event.getItemDrop().getItemStack().getType() == Material.WOOL && !event.getPlayer().isOp())
-			event.setCancelled(true);
-	}
-	
-	@EventHandler
-	public void onBlockPlace(BlockPlaceEvent event) {
-		if (event.getBlock().getType() == Material.WOOL && !event.getPlayer().isOp())
+	public void onPlayerShear(PlayerShearEntityEvent event) {
+		if (event.getEntity().getType() == EntityType.SHEEP)
 			event.setCancelled(true);
 	}
 	

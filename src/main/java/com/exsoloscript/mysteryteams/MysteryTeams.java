@@ -25,56 +25,56 @@ public class MysteryTeams extends JavaPlugin {
 	private List<ColorData> availableColors;
 	private List<String> missingPlayers;
 	private MysteryTeamManager teamManager;
-	
+
 	public void onEnable() {
 		this.teamData = new HashMap<UUID, Integer>();
 		this.availableColors = new ArrayList<ColorData>(Arrays.asList(ColorData.values()));
 		this.teamManager = new MysteryTeamManager(this);
 		this.missingPlayers = new ArrayList<String>();
-		
+
 		register();
 	}
-	
+
 	public void onDisable() {
-		
+
 	}
-	
+
 	public void register() {
-		
-		//Command
-		
+
+		// Command
+
 		getCommand("mt").setExecutor(new MysteryTeamsCommand(this));
-		
-		//Events
-		
+
+		// Events
+
 		PluginManager pm = Bukkit.getPluginManager();
-		
+
 		pm.registerEvents(new JoinListener(this), this);
 		pm.registerEvents(new DeathListener(this), this);
 		pm.registerEvents(new WoolListener(), this);
 	}
-	
+
 	public void resetTeamManager() {
 		availableColors = new ArrayList<ColorData>(Arrays.asList(ColorData.values()));
 		this.teamManager = new MysteryTeamManager(this);
 	}
-	
+
 	public String prefix() {
 		return ChatColor.GOLD + "[" + ChatColor.RED + "MysteryTeams" + ChatColor.GOLD + "] " + ChatColor.WHITE;
 	}
-	
+
 	public List<ColorData> getAvailableColors() {
 		return availableColors;
 	}
-	
+
 	public Map<UUID, Integer> getTeamData() {
 		return teamData;
 	}
-	
+
 	public MysteryTeamManager getTeamManager() {
 		return this.teamManager;
 	}
-	
+
 	public List<String> getMissingPlayers() {
 		return this.missingPlayers;
 	}

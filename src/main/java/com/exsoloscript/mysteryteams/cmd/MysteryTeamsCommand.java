@@ -134,7 +134,7 @@ public class MysteryTeamsCommand implements CommandExecutor {
 
 	public void printHelp(CommandSender sender) {
 		sender.sendMessage(plugin.prefix() + "MysteryTeams Command");
-		sender.sendMessage(" - " + ChatColor.BLUE + "/mt randomize <number-of-teams>");
+		sender.sendMessage(" - " + ChatColor.BLUE + "/mt randomize <number-of-teams> [use-ops]");
 		sender.sendMessage(" - " + ChatColor.BLUE + "/mt clear");
 		sender.sendMessage(" - " + ChatColor.BLUE + "/mt list");
 		sender.sendMessage(" - " + ChatColor.BLUE + "/mt wool");
