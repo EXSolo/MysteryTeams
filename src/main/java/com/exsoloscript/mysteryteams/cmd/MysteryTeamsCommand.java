@@ -120,6 +120,8 @@ public class MysteryTeamsCommand implements CommandExecutor {
 
 							sender.sendMessage(plugin.prefix() + "Gave wool to online players. Will wait for offline players to join.");
 						}
+					} else if (args[0].equalsIgnoreCase("version")) {
+						sender.sendMessage(plugin.prefix() + "Plugin v" + plugin.getDescription().getVersion() + " created by EXSolo.");
 					} else {
 						printHelp(sender);
 					}
@@ -138,6 +140,7 @@ public class MysteryTeamsCommand implements CommandExecutor {
 		sender.sendMessage(" - " + ChatColor.BLUE + "/mt clear");
 		sender.sendMessage(" - " + ChatColor.BLUE + "/mt list");
 		sender.sendMessage(" - " + ChatColor.BLUE + "/mt wool");
+		sender.sendMessage(" - " + ChatColor.BLUE + "/mt version");
 	}
 
 }

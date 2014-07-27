@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>MysteryTeams</groupId>
   <artifactId>mysteryteams</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>1.0</version>
   <name>mysteryteams</name>
   <repositories>
 		<!-- Bukkit can be found at the following repository -->
