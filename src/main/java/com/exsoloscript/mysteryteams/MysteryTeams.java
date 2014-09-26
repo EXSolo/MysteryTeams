@@ -23,14 +23,14 @@ public class MysteryTeams extends JavaPlugin {
 
 	private Map<UUID, Integer> teamData;
 	private List<ColorData> availableColors;
-	private List<String> missingPlayers;
+	private List<UUID> missingPlayers;
 	private MysteryTeamManager teamManager;
 
 	public void onEnable() {
 		this.teamData = new HashMap<UUID, Integer>();
 		this.availableColors = new ArrayList<ColorData>(Arrays.asList(ColorData.values()));
 		this.teamManager = new MysteryTeamManager(this);
-		this.missingPlayers = new ArrayList<String>();
+		this.missingPlayers = new ArrayList<UUID>();
 
 		register();
 	}
@@ -55,7 +55,9 @@ public class MysteryTeams extends JavaPlugin {
 	}
 
 	public void resetTeamManager() {
-		availableColors = new ArrayList<ColorData>(Arrays.asList(ColorData.values()));
+		this.availableColors = new ArrayList<ColorData>(Arrays.asList(ColorData.values()));
+		this.teamData.clear();
+		this.missingPlayers.clear();
 		this.teamManager = new MysteryTeamManager(this);
 	}
 
@@ -75,7 +77,7 @@ public class MysteryTeams extends JavaPlugin {
 		return this.teamManager;
 	}
 
-	public List<String> getMissingPlayers() {
+	public List<UUID> getMissingPlayers() {
 		return this.missingPlayers;
 	}
 }

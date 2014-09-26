@@ -36,19 +36,19 @@ public class DeathListener implements Listener {
 			
 			event.getDrops().add(new Wool(t.getColorData().getDyeColor()).toItemStack(1));
 			
-			Bukkit.broadcastMessage(plugin.prefix() + t.getColorData().getChatColor() + "Player from team " + t.getColorData().getChatColor().name().toLowerCase() + " died.");
-			t.remove(p.getName());
-			if (t.size() > 0) {
-				Bukkit.broadcastMessage(plugin.prefix() + t.getColorData().getChatColor() + "Team " + t.getColorData().getChatColor().name().toLowerCase() + " has " + ChatColor.RESET + t.size() + t.getColorData().getChatColor()
-						+ (t.size() > 1 ? " players" : " player") + " left");
+			Bukkit.broadcastMessage(plugin.prefix() + t.getColorData().getChatColor() + "Player from team " + t.getColorData().getName() + " died.");
+			t.getPlayers().remove(p.getUniqueId());
+			if (t.getPlayers().size() > 0) {
+				Bukkit.broadcastMessage(plugin.prefix() + t.getColorData().getChatColor() + "Team " + t.getColorData().getName() + " has " + ChatColor.RESET + t.getPlayers().size() + t.getColorData().getChatColor()
+						+ (t.getPlayers().size() > 1 ? " players" : " player") + " left");
 			} else {
-				this.plugin.getTeamManager().remove(t);
+				this.plugin.getTeamManager().getTeams().remove(t);
 				Bukkit.broadcastMessage(plugin.prefix() + t.getColorData().getChatColor()
 						+ "Team "
 						+ t.getColorData().getChatColor().name().toLowerCase()
 						+ " eliminated. "
-						+ (this.plugin.getTeamManager().size() > 0 ? "There are " + ChatColor.RESET + (this.plugin.getTeamManager().size()) + t.getColorData().getChatColor() + " teams left." : "The "
-								+ t.getColorData().getChatColor().name().toLowerCase() + " team won!"));
+						+ (this.plugin.getTeamManager().getTeams().size() > 0 ? "There are " + ChatColor.RESET + (this.plugin.getTeamManager().getTeams().size()) + t.getColorData().getChatColor() + " teams left." : "The "
+								+ t.getColorData().getName() + " team won!"));
 			}
 		}
 	}

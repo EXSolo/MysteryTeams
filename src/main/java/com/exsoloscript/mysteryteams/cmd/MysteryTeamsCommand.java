@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -27,7 +28,6 @@ public class MysteryTeamsCommand implements CommandExecutor {
 		this.plugin = t;
 	}
 
-	@SuppressWarnings("deprecation")
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
 		if (label.equalsIgnoreCase("mt")) {
@@ -75,7 +75,7 @@ public class MysteryTeamsCommand implements CommandExecutor {
 							for (List<Player> team : teams) {
 								MysteryTeam t = this.plugin.getTeamManager().newTeam();
 								for (Player p : team)
-									t.add(p.getName());
+									t.getPlayers().add(p.getUniqueId());
 							}
 
 							sender.sendMessage(plugin.prefix() + "Teams randomized.");
@@ -88,23 +88,23 @@ public class MysteryTeamsCommand implements CommandExecutor {
 						}
 					} else if (args[0].equalsIgnoreCase("list")) {
 						if (sender.isOp()) {
-							if (this.plugin.getTeamManager().size() > 0) {
+							if (this.plugin.getTeamManager().getTeams().size() > 0) {
 								sender.sendMessage(plugin.prefix() + "Printing existing teams:");
-								for (MysteryTeam t : this.plugin.getTeamManager()) {
+								for (MysteryTeam t : this.plugin.getTeamManager().getTeams()) {
 									sender.sendMessage(t.getColorData().getChatColor() + "Team " + t.getColorData().getChatColor().name().toLowerCase() + ":");
-									for (String name : t) {
-										sender.sendMessage(" - " + (Bukkit.getPlayer(name) == null ? ChatColor.RED : ChatColor.GREEN) + name);
+									for (UUID uuid : t.getPlayers()) {
+										sender.sendMessage(" - " + (Bukkit.getOfflinePlayer(uuid) == null ? ChatColor.RED : ChatColor.GREEN) + Bukkit.getOfflinePlayer(uuid).getName());
 									}
 								}
 							} else {
 								sender.sendMessage(plugin.prefix() + "No teams defined yet.");
 							}
 						}
-					} else if (args[0].equalsIgnoreCase("wool")) {
+					} else if (args[0].equalsIgnoreCase("wool") || args[0].equalsIgnoreCase("wools")) {
 						if (sender.isOp()) {
-							for (MysteryTeam t : this.plugin.getTeamManager()) {
-								for (String name : t) {
-									Player p = Bukkit.getPlayer(name);
+							for (MysteryTeam t : this.plugin.getTeamManager().getTeams()) {
+								for (UUID uuid : t.getPlayers()) {
+									Player p = Bukkit.getPlayer(uuid);
 									ItemStack wool = new Wool(t.getColorData().getDyeColor()).toItemStack(1);
 									if (p != null)
 										if (p.getInventory().firstEmpty() > -1) {
@@ -114,16 +114,23 @@ public class MysteryTeamsCommand implements CommandExecutor {
 											p.sendMessage(plugin.prefix() + "Your wool was dropped on the ground since your inventory is full!");
 										}
 									else
-										this.plugin.getMissingPlayers().add(name);
+										this.plugin.getMissingPlayers().add(uuid);
 								}
 							}
 
 							sender.sendMessage(plugin.prefix() + "Gave wool to online players. Will wait for offline players to join.");
 						}
-					} else if (args[0].equalsIgnoreCase("version")) {
-						sender.sendMessage(plugin.prefix() + "Plugin v" + plugin.getDescription().getVersion() + " created by EXSolo.");
-					} else {
-						printHelp(sender);
+					}
+				} else {
+					sender.sendMessage(plugin.prefix() + "You have to be operator to execute this command!");
+				}
+				
+				if (args[0].equalsIgnoreCase("version")) {
+					sender.sendMessage(plugin.prefix() + "Plugin v" + plugin.getDescription().getVersion() + " created by EXSolo.");
+				} else if (args[0].equalsIgnoreCase("teamsize")) {
+					sender.sendMessage(plugin.prefix() + "Printing teamsize of existing teams:");
+					for (MysteryTeam t : this.plugin.getTeamManager().getTeams()) {
+						sender.sendMessage(" - " + t.getColorData().getChatColor() + "Team " + t.getColorData().getName() + ": " + ChatColor.RESET + t.getPlayers().size());
 					}
 				}
 			} else {
@@ -141,6 +148,8 @@ public class MysteryTeamsCommand implements CommandExecutor {
 		sender.sendMessage(" - " + ChatColor.BLUE + "/mt list");
 		sender.sendMessage(" - " + ChatColor.BLUE + "/mt wool");
 		sender.sendMessage(" - " + ChatColor.BLUE + "/mt version");
+		sender.sendMessage(" - " + ChatColor.BLUE + "/mt help");
+		sender.sendMessage(" - " + ChatColor.BLUE + "/mt teamsize");
 	}
 
 }

@@ -23,8 +23,7 @@ public class JoinListener implements Listener {
 		if (this.plugin.getMissingPlayers().contains(event.getPlayer().getName())) {
 			Player p = event.getPlayer();
 			MysteryTeam t = this.plugin.getTeamManager().getByPlayer(event.getPlayer());
-			ItemStack tmp = new Wool(t.getColorData().getDyeColor()).toItemStack();
-			ItemStack wool = new ItemStack(tmp.getType(), tmp.getAmount(), tmp.getDurability());
+			ItemStack wool = new Wool(t.getColorData().getDyeColor()).toItemStack(1);
 			if (t != null) {
 				if (p.getInventory().firstEmpty() > -1)
 					p.getInventory().addItem(wool);
