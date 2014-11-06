@@ -3,12 +3,15 @@ package com.exsoloscript.mysteryteams;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.inventory.Recipe;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -51,7 +54,17 @@ public class MysteryTeams extends JavaPlugin {
 
 		pm.registerEvents(new JoinListener(this), this);
 		pm.registerEvents(new DeathListener(this), this);
-		pm.registerEvents(new WoolListener(), this);
+		pm.registerEvents(new WoolListener(this), this);
+
+		// Recipies
+
+		Iterator<Recipe> recipes = getServer().recipeIterator();
+		Recipe recipe;
+		while (recipes.hasNext()) {
+			recipe = recipes.next();
+			if (recipe != null && recipe.getResult().getType() == Material.WOOL)
+				recipes.remove();
+		}
 	}
 
 	public void resetTeamManager() {

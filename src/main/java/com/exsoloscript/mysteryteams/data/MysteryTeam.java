@@ -1,22 +1,46 @@
 package com.exsoloscript.mysteryteams.data;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
+import java.util.Map.Entry;
 
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
+import org.bukkit.OfflinePlayer;
 
 public class MysteryTeam {
 
-	private List<UUID> players;
 	private int id;
+	private Map<UUID, Boolean> players;
 	private ColorData colorData;
 
 	public MysteryTeam(int id, ColorData cd) {
 		this.id = id;
 		this.colorData = cd;
-		this.players = new ArrayList<UUID>();
+		this.players = new HashMap<UUID, Boolean>();
+	}
+	
+	public void addPlayer(OfflinePlayer p) {
+		this.players.put(p.getUniqueId(), true);
+	}
+	
+	public void removePlayer(OfflinePlayer p) {
+		this.players.remove(p.getUniqueId());
+	}
+	
+	public int playersAlive() {
+		int alive = 0;
+
+		for (Entry<UUID, Boolean> e : this.players.entrySet())
+			if (e.getValue())
+				alive++;
+		
+		return alive;
+	}
+	
+	public boolean hasPlayersAlive() {
+		return (playersAlive() > 0);
 	}
 
 	public int getId() {
@@ -35,7 +59,7 @@ public class MysteryTeam {
 		this.colorData = colorData;
 	}
 	
-	public List<UUID> getPlayers() {
+	public Map<UUID, Boolean> getPlayers() {
 		return this.players;
 	}
 

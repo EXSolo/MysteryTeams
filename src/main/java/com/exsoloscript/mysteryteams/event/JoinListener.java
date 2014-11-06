@@ -20,7 +20,7 @@ public class JoinListener implements Listener {
 
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
-		if (this.plugin.getMissingPlayers().contains(event.getPlayer().getName())) {
+		if (this.plugin.getMissingPlayers().contains(event.getPlayer().getUniqueId())) {
 			Player p = event.getPlayer();
 			MysteryTeam t = this.plugin.getTeamManager().getByPlayer(event.getPlayer());
 			ItemStack wool = new Wool(t.getColorData().getDyeColor()).toItemStack(1);
@@ -31,7 +31,7 @@ public class JoinListener implements Listener {
 					p.getWorld().dropItem(p.getLocation(), wool);
 					p.sendMessage(plugin.prefix() + "Your wool was dropped on the ground since your inventory is full!");
 				}
-				this.plugin.getMissingPlayers().remove(p.getName());
+				this.plugin.getMissingPlayers().remove(p.getUniqueId());
 			}
 		}
 	}
