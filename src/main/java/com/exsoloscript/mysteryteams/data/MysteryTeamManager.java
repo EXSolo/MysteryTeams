@@ -28,7 +28,7 @@ public class MysteryTeamManager {
 		} else
 			return null;
 
-		int id = this.teams.size() + 1;
+		int id = 1;
 		
 		while (getByID(id) != null)
 			id++;

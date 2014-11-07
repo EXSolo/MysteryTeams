@@ -14,8 +14,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.Wool;
 
 import com.exsoloscript.mysteryteams.MysteryTeams;
 import com.exsoloscript.mysteryteams.MysteryTeamsUtils;
@@ -129,21 +127,12 @@ public class MysteryTeamsCommand implements CommandExecutor {
 						for (MysteryTeam t : this.plugin.getTeamManager().getTeams()) {
 							for (Entry<UUID, Boolean> e : t.getPlayers().entrySet()) {
 								if (e.getValue()) {
-									Player p = Bukkit.getPlayer(e.getKey());
-									ItemStack wool = new Wool(t.getColorData().getDyeColor()).toItemStack(1);
-									if (p != null)
-										if (p.getInventory().firstEmpty() > -1) {
-											p.getInventory().addItem(wool);
-										} else {
-											p.getWorld().dropItem(p.getLocation(), wool);
-											p.sendMessage(plugin.prefix() + "Your wool was dropped on the ground since your inventory is full!");
-										}
-									else
-										this.plugin.getMissingPlayers().add(e.getKey());
+									this.plugin.giveWool(e.getKey(), t.getColorData());
 								}
 							}
 						}
 
+						Bukkit.broadcastMessage(plugin.prefix() + "Wool was given to online players");
 						sender.sendMessage(plugin.prefix() + "Gave wool to online players. Will wait for offline players to join.");
 					} else if (args[0].equalsIgnoreCase("add")) {
 						if (args.length > 2) {
@@ -198,7 +187,7 @@ public class MysteryTeamsCommand implements CommandExecutor {
 									sender.sendMessage(plugin.prefix() + "Team with the id " + t.getId() + " was created");
 								} else
 									sender.sendMessage(plugin.prefix() + "Team could not be created, all colours are in use");
-							} else if (args[1].equalsIgnoreCase("remove")) {
+							} else if (args[1].equalsIgnoreCase("remove") || args[1].equalsIgnoreCase("rem")) {
 								if (args.length > 2) {
 									int id = 0;
 									try {

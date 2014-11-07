@@ -49,7 +49,7 @@ public class DeathListener implements Listener {
 							+ t.getColorData().getName()
 							+ " eliminated. "
 							+ (this.plugin.getTeamManager().getTeamsWithAlivePlayers().size() > 1 ? "There are " + ChatColor.RESET + (this.plugin.getTeamManager().getTeamsWithAlivePlayers().size()) + t.getColorData().getChatColor() + " teams left."
-									: "The " + (this.plugin.getTeamManager().getTeamsWithAlivePlayers().size() == 1 ? this.plugin.getTeamManager().getTeamsWithAlivePlayers().get(0).getColorData().getName() : "last") + " team won!"));
+									: "The " + (this.plugin.getTeamManager().getTeamsWithAlivePlayers().size() == 1 ? this.plugin.getTeamManager().getTeamsWithAlivePlayers().get(0).getColorData().getName() : "last") + " team wins!"));
 				}
 			}
 		}

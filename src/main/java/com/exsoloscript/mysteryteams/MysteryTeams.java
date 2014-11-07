@@ -3,15 +3,15 @@ package com.exsoloscript.mysteryteams;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.inventory.Recipe;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.Wool;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -55,16 +55,6 @@ public class MysteryTeams extends JavaPlugin {
 		pm.registerEvents(new JoinListener(this), this);
 		pm.registerEvents(new DeathListener(this), this);
 		pm.registerEvents(new WoolListener(this), this);
-
-		// Recipies
-
-		Iterator<Recipe> recipes = getServer().recipeIterator();
-		Recipe recipe;
-		while (recipes.hasNext()) {
-			recipe = recipes.next();
-			if (recipe != null && recipe.getResult().getType() == Material.WOOL)
-				recipes.remove();
-		}
 	}
 
 	public void resetTeamManager() {
@@ -72,6 +62,20 @@ public class MysteryTeams extends JavaPlugin {
 		this.teamData.clear();
 		this.missingPlayers.clear();
 		this.teamManager = new MysteryTeamManager(this);
+	}
+	
+	public void giveWool(UUID u, ColorData cd) {
+		ItemStack wool = new Wool(cd.getDyeColor()).toItemStack(1);
+		Player p = Bukkit.getPlayer(u);
+		if (p != null)
+			if (p.getInventory().firstEmpty() > -1) {
+				p.getInventory().addItem(wool);
+			} else {
+				p.getWorld().dropItem(p.getLocation(), wool);
+				p.sendMessage(prefix() + "Your wool was dropped on the ground since your inventory is full!");
+			}
+		else
+			this.missingPlayers.add(u);
 	}
 
 	public String prefix() {
