@@ -1,12 +1,12 @@
-package com.exsoloscript.mysteryteams;
+package com.exsoloscript.mysteryteams.util;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MysteryTeamsUtils {
+public class CollectionUtils {
 
 	public static <T> List<List<T>> split(List<T> toSplit, int howOften) {
-		List<List<T>> list = new ArrayList<List<T>>(howOften);
+		List<List<T>> list = new ArrayList<>(howOften);
 		for (int i = 0; i < howOften; i++) {
 			list.add(new ArrayList<T>());
 		}
