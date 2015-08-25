@@ -2,7 +2,6 @@ package com.exsoloscript.mysteryteams.module;
 
 import com.exsoloscript.mysteryteams.team.MysteryTeam;
 import org.bukkit.Material;
-import org.bukkit.block.Banner;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.inventory.ItemStack;
@@ -27,7 +26,9 @@ public class BannerModule extends TeamBasedModule {
 
     @EventHandler
     public void onPrepareCraft(PrepareItemCraftEvent event) {
-        if (event.getInventory().getResult().getType() == Material.BANNER)
-            event.getInventory().getResult().setType(Material.AIR);
+        if (event.getInventory().getResult() != null) {
+            if (event.getInventory().getResult().getType() == Material.BANNER)
+                event.getInventory().setResult(new ItemStack(Material.AIR));
+        }
     }
 }

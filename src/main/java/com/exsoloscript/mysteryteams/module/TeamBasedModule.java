@@ -24,7 +24,7 @@ public abstract class TeamBasedModule extends GameModule {
     public TeamBasedModule(String moduleName) {
         super(moduleName);
         this.missingPlayers = new ArrayList<>();
-        this.teamManager = new MysteryTeamManager();
+        this.teamManager = new MysteryTeamManager(this);
     }
 
     public abstract ItemStack getItem(MysteryTeam t);

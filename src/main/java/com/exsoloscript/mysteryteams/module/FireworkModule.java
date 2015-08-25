@@ -29,7 +29,9 @@ public class FireworkModule extends TeamBasedModule {
 
     @EventHandler
     public void onPrepareCraft(PrepareItemCraftEvent event) {
-        if (event.getInventory().getResult().getType() == Material.FIREWORK)
-            event.getInventory().getResult().setType(Material.AIR);
+        if (event.getInventory().getResult() != null) {
+            if (event.getInventory().getResult().getType() == Material.FIREWORK)
+                event.getInventory().setResult(new ItemStack(Material.AIR));
+        }
     }
 }

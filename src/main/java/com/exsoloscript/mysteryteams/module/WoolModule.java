@@ -25,8 +25,10 @@ public class WoolModule extends TeamBasedModule {
 
     @EventHandler
     public void onPrepareCraft(PrepareItemCraftEvent event) {
-        if (event.getInventory().getResult().getType() == Material.WOOL)
-            event.getInventory().getResult().setType(Material.AIR);
+        if (event.getInventory().getResult() != null) {
+            if (event.getInventory().getResult().getType() == Material.WOOL)
+                event.getInventory().setResult(new ItemStack(Material.AIR));
+        }
     }
 
     @EventHandler
@@ -39,8 +41,8 @@ public class WoolModule extends TeamBasedModule {
     public void onEntityDeath(EntityDeathEvent event) {
         if (event.getEntityType() == EntityType.SHEEP) {
             List<ItemStack> drops = event.getDrops();
-            for (ItemStack i : drops) {
-                if (i.getType() == Material.WOOL)
+            for (int i = 0; i < drops.size(); i++) {
+                if (drops.get(i).getType() == Material.WOOL)
                     drops.remove(i);
             }
         }

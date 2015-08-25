@@ -38,6 +38,14 @@ public class MysteryTeamsCommand implements CommandExecutor {
             }
 
             if (args.length > 0) {
+                if (args[0].equalsIgnoreCase("version")) {
+                    sender.sendMessage(prefix() + "Plugin v" + plugin.getDescription().getVersion() + " created by EXSolo.");
+                    return true;
+                } else if (args[0].equalsIgnoreCase("teamsize")) {
+                    sender.sendMessage(module.getTeamManager().getTeamSizes());
+                    return true;
+                }
+
                 if (sender.hasPermission("mysteryteams.admin")) {
                     if (args[0].equalsIgnoreCase("randomize")) {
                         if (args.length > 1) {
@@ -78,12 +86,17 @@ public class MysteryTeamsCommand implements CommandExecutor {
                     } else if (args[0].equalsIgnoreCase("list")) {
                         sender.sendMessage(module.getTeamManager().toString());
                     } else if (args[0].equalsIgnoreCase("give")) {
-                        module.getTeamManager().giveItems(module);
-                        sender.sendMessage(prefix() + "Gave items to online players. Will wait for offline players to join.");
+                        if (args.length > 1) {
+                            module.getTeamManager().giveItem(Bukkit.getPlayer(args[1]));
+                            sender.sendMessage(prefix() + "Gave item to player.");
+                        } else {
+                            module.getTeamManager().giveItems();
+                            sender.sendMessage(prefix() + "Gave items to online players. Will wait for offline players to join.");
+                        }
                     } else if (args[0].equalsIgnoreCase("mode")) {
                         if (args.length > 1) {
                             if (args[1].equalsIgnoreCase("list")) {
-                                sender.sendMessage(prefix() + "Listing loaded modes");
+                                sender.sendMessage(prefix() + "Listing loaded modes:");
                                 for (GameModule m : this.plugin.getModuleManager().getRegisteredModules()) {
                                     sender.sendMessage(" - " + m.getName());
                                 }
@@ -102,16 +115,11 @@ public class MysteryTeamsCommand implements CommandExecutor {
                         } else {
                             sender.sendMessage(prefix() + "Correct usage: /mt mode <mode-name;list>");
                         }
+                    } else {
+                        sender.sendMessage(prefix() + "Unknown argument.");
                     }
                 } else {
                     sender.sendMessage(prefix() + "You have no permission to execute this command!");
-                }
-
-                if (args[0].equalsIgnoreCase("version")) {
-                    sender.sendMessage(prefix() + "Plugin v" + plugin.getDescription().getVersion() + " created by EXSolo.");
-                } else if (args[0].equalsIgnoreCase("teamsize")) {
-                    sender.sendMessage(prefix() + "Printing teamsize of existing teams:");
-                    sender.sendMessage(module.getTeamManager().getTeamSizes());
                 }
             } else {
                 printHelp(sender);
@@ -127,7 +135,7 @@ public class MysteryTeamsCommand implements CommandExecutor {
         sender.sendMessage(" - " + ChatColor.BLUE + "/mt mode <list;mode-name>");
         sender.sendMessage(" - " + ChatColor.BLUE + "/mt clear");
         sender.sendMessage(" - " + ChatColor.BLUE + "/mt list");
-        sender.sendMessage(" - " + ChatColor.BLUE + "/mt give");
+        sender.sendMessage(" - " + ChatColor.BLUE + "/mt give [player]");
         sender.sendMessage(" - " + ChatColor.BLUE + "/mt version");
         sender.sendMessage(" - " + ChatColor.BLUE + "/mt teamsize");
     }

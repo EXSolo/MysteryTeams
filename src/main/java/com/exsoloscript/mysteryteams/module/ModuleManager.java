@@ -1,22 +1,22 @@
 package com.exsoloscript.mysteryteams.module;
 
-import com.exsoloscript.mysteryteams.MysteryTeamsPlugin;
 import com.google.common.base.Preconditions;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ModuleManager {
 
-    private MysteryTeamsPlugin plugin;
+    private JavaPlugin plugin;
 
     private GameModule current;
 
     private List<GameModule> registeredModules;
 
-    public ModuleManager(MysteryTeamsPlugin plugin) {
+    public ModuleManager(JavaPlugin plugin) {
         this.plugin = plugin;
         this.registeredModules = new ArrayList<>();
 

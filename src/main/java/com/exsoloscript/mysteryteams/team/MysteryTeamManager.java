@@ -18,10 +18,13 @@ import static com.exsoloscript.mysteryteams.MysteryTeamsPlugin.prefix;
 
 public class MysteryTeamManager {
 
+    private TeamBasedModule module;
+
     private List<MysteryTeam> teams;
     private Colors colors;
 
-    public MysteryTeamManager() {
+    public MysteryTeamManager(TeamBasedModule module) {
+        this.module = module;
         reset();
     }
 
@@ -69,20 +72,20 @@ public class MysteryTeamManager {
 
     public void reset() {
         this.teams = new ArrayList<>();
-        this.colors.reset();
+        this.colors = new Colors();
     }
 
-    public void giveItems(TeamBasedModule module) {
+    public void giveItems() {
         for (MysteryTeam t : getTeams()) {
             for (UUID uuid : t.getPlayers()) {
                 Player p = Bukkit.getPlayer(uuid);
-                ItemStack wool = module.getItem(t);
+                ItemStack item = module.getItem(t);
                 if (p != null)
                     if (p.getInventory().firstEmpty() > -1) {
-                        p.getInventory().addItem(wool);
+                        p.getInventory().addItem(item);
                     } else {
-                        p.getWorld().dropItem(p.getLocation(), wool);
-                        p.sendMessage(prefix() + "Your item was dropped on the ground since your inventory is full!");
+                        p.getWorld().dropItem(p.getLocation(), item);
+                        p.sendMessage(prefix() + ChatColor.RED + "Your item was dropped on the ground since your inventory is full!");
                     }
                 else
                     module.getMissingPlayers().add(uuid);
@@ -90,11 +93,32 @@ public class MysteryTeamManager {
         }
     }
 
+    public void giveItem(Player player) {
+        if (player != null) {
+            MysteryTeam team = getByPlayer(player);
+            if (team != null) {
+                ItemStack item = module.getItem(team);
+                if (player.getInventory().firstEmpty() > -1) {
+                    player.getInventory().addItem(item);
+                } else {
+                    player.getWorld().dropItem(player.getLocation(), item);
+                    player.sendMessage(prefix() + ChatColor.RED + "Your item was dropped on the ground since your inventory is full!");
+                }
+            }
+        }
+    }
+
     public String getTeamSizes() {
         String out = "";
-        for (MysteryTeam t : getTeams()) {
-            out += " - " + t.getColorData().getChatColor() + "Team " + t.getColorData().getName() + ": " + ChatColor.RESET + t.getPlayers().size() + "\n";
+        if (getTeams().size() > 0) {
+            out += prefix() + "Printing teamsize of existing teams:\n";
+            for (MysteryTeam t : getTeams()) {
+                out += " - " + t.getColorData().getChatColor() + "Team " + t.getColorData().getName() + ": " + ChatColor.RESET + t.getPlayers().size() + "\n";
+            }
+        } else {
+            out = prefix() + "No teams defined yet.";
         }
+
         return out;
     }
 
